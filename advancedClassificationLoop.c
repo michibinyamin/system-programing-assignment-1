@@ -23,7 +23,7 @@ int count_digits(int num){      //returns the amount of digits
 int isArmstrong(int num) {
     int originalNum = num;      //Store the original number
     int Armstrong = 0;
-    int digits = count_digits(num);
+    int digits = count_digits(num);     //stores amount of digits
         
     while(num > 0)
     {
@@ -44,8 +44,8 @@ int isPalindrome(int num) {
     int reversedNum = 0;
 
     while (num > 0) {
-        int digit = num % 10;
-        reversedNum = (reversedNum * 10) + digit;
+        int digit = num % 10;       //get first digit
+        reversedNum = (reversedNum * 10) + digit;       //adds in the oposit direction in the new number
         num = num / 10;
     }
 

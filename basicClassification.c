@@ -3,10 +3,10 @@
 
 int isPrime(int num) {
     if (num <= 1) {
-        return 0; // Not prime
+        return 0; //not prime
     }
 
-    for (int i = 2; i * i <= num; i++) {
+    for (int i = 2; i * i <= num; i++) {    
         if (num % i == 0) {
             return 0; // not prime
         }
@@ -19,6 +19,7 @@ int isStrong(int num) {
     int originalNum = num;
     int sum = 0;
 
+    // Calculate the sum of factorials of individual digits
     while (num > 0) {
         int digit = num % 10;
         int fact = 1;

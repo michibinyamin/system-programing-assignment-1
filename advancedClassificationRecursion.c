@@ -18,7 +18,7 @@ int isArmstrongRecursive(int num, int digits) {
     }
 
     int lastDigit = num % 10;
-    return power(lastDigit, digits) + isArmstrongRecursive(num / 10, digits);
+    return power(lastDigit, digits) + isArmstrongRecursive(num / 10, digits);   //adds them up
 }
 
 int count_digits1(int num){      //returns amount of digits
@@ -45,16 +45,16 @@ int isPalindromeRecursive(int num, int digits) {
     } else {
         int firstDigit = num / (int)power(10, digits - 1);
         int lastDigit = num % 10;
-
-    if (firstDigit != lastDigit) {
+    
+        if (firstDigit != lastDigit) {
         return 0; // Not a palindrome
-    } else {
+        } else {
         // Remove the first and last digits
         int remainingNum = (num % (int)power(10, digits - 1)) / 10;
         // Recursively check the remaining number
         return isPalindromeRecursive(remainingNum, digits - 2);
+        }
     }
-}
 }
 int isPalindrome(int num) {
     int digits = count_digits1(num);
