@@ -1,68 +1,63 @@
-STATIC_LOOP_LIBRARY = libclassloops.a		#static library
-STATIC_RECURSIVE_LIBRARY = libclassrec.a 			#static library
-DYNAMIC_LOOP_LIBRARY = libclassloops.so	#dynamic library
-DYNAMIC_RECURSIVE_LIBRARY = libclassrec.so		#dynamic library
+# names
+HEADER = NumClass.h
+MAIN = main.c
+STATIC_LOOP_LIBRARY = libclassloops.a
+STATIC_RECURSIVE_LIBRARY = libclassrec.a
+DYNAMIC_LOOP_LIBRARY = libclassloops.so
+DYNAMIC_RECURSIVE_LIBRARY = libclassrec.so
 
-# Source files
-LIB_LOOP_C = basicClassification.c advancedClassificationLoop.c
-LIB_REC_C = basicClassification.c advancedClassificationRecursion.c
+# Build everything 
+all: loops recursives recursived loopd mains maindloop maindrec 
 
-# Object files
-LIB_LOOP_OBJS = $(LIB_LOOP_C:.c=.o)
-LIB_REC_OBJS = $(LIB_REC_C:.c=.o)
-
-all: mains maindloop maindrec loops recursives recursived loopd
-loops: $(STATIC_LOOP_LIBRARY)			
-recursives: $(STATIC_RECURSIVE_LIBRARY)		
+# Builds libraries
+loops: $(STATIC_LOOP_LIBRARY)
+recursives: $(STATIC_RECURSIVE_LIBRARY)
 recursived: $(DYNAMIC_RECURSIVE_LIBRARY)
 loopd: $(DYNAMIC_LOOP_LIBRARY)
 
-# build main with static recursive library
-mains: $(STATIC_RECURSIVE_LIBRARY) main.o
-	gcc -Wall -o $@ main.o -L. -lclassrec
+# Main programs :
+# Build main with static recursive library
+mains: $(MAIN:.c=.o) $(STATIC_RECURSIVE_LIBRARY)
+	gcc -Wall $< ./$(STATIC_RECURSIVE_LIBRARY) -o $@
 
-# build main with dynamic loop library
-maindloop: $(DYNAMIC_LOOP_LIBRARY) main.o
-	gcc -Wall -o $@ main.o -L. -lclassloops
+# Build main with dynamic loop library
+maindloop: $(MAIN:.c=.o) $(DYNAMIC_LOOP_LIBRARY)
+	gcc -Wall $< ./$(DYNAMIC_LOOP_LIBRARY) -o $@
 
-# build main with dynamic recursive library
-maindrec: $(DYNAMIC_RECURSIVE_LIBRARY) main.o
-	gcc -Wall -o $@ main.o -L. -lclassrec
+# Build main with dynamic recursive library
+maindrec: $(MAIN:.c=.o) $(DYNAMIC_RECURSIVE_LIBRARY)
+	gcc -Wall $< ./$(DYNAMIC_RECURSIVE_LIBRARY) -o $@
 
-#build main object file
-main.o: main.c
-	gcc -Wall -c -o $@ $<
+# Compile main program to object file
+$(MAIN:.c=.o): $(MAIN) $(HEADER)
+	gcc -Wall -c $^
 
-# Build basic object file
-basicClassification.o: basicClassification.c
-	gcc -Wall -c -o $@ $<
+# Builds libraries
+$(DYNAMIC_RECURSIVE_LIBRARY): advancedClassificationRecursion.o basicClassification.o
+	gcc -shared -Wall $^ -o $@
 
-# Build static loop library
-$(STATIC_LOOP_LIBRARY): $(LIB_LOOP_OBJS)
+$(DYNAMIC_LOOP_LIBRARY): advancedClassificationLoop.o basicClassification.o
+	gcc -shared -Wall $^ -o $@
+
+$(STATIC_LOOP_LIBRARY): advancedClassificationLoop.o basicClassification.o
 	ar rcs $@ $^
 
-# Build static recursive library
-$(STATIC_RECURSIVE_LIBRARY): $(LIB_REC_OBJS) 
+$(STATIC_RECURSIVE_LIBRARY): advancedClassificationRecursion.o basicClassification.o
 	ar rcs $@ $^
 
-#build dynamic loop library
-$(DYNAMIC_LOOP_LIBRARY): $(LIB_LOOP_OBJS)
-	gcc -Wall -fPIC	-shared -o $@ $^
+#Builds object files
+advancedClassificationLoop.o: advancedClassificationLoop.c $(HEADER)
+	gcc -Wall -c $^ -fPIC
 
-#build dynamic recursive library
-$(DYNAMIC_RECURSIVE_LIBRARY): $(LIB_REC_OBJS)
-	gcc -Wall -fPIC	-shared -o $@ $^
+advancedClassificationRecursion.o: advancedClassificationRecursion.c $(HEADER)
+	gcc -Wall -c $^ -fPIC
 
-#build loop file
-advancedClassificationLoop.o: advancedClassificationLoop.c
-	gcc -Wall -c -o $@ $<
+basicClassification.o: basicClassification.c $(HEADER)
+	gcc -Wall -c $^ -fPIC
+	
+#Command which are not targets
+.PHONY: all clean loops recursives recursived loopd 
 
-#build recursive file
-advancedClassificationRecursion.o: advancedClassificationRecursion.c
-	gcc -Wall -c -o $@ $<
-
-#clean all .o .a .so prog
+#Clean nessesery files
 clean:
-	rm -f *.o $(STATIC_RECURSIVE_LIBRARY) $(STATIC_LOOP_LIBRARY) $(DYNAMIC_RECURSIVE_LIBRARY) $(DYNAMIC_LOOP_LIBRARY) mains maindloop maindrec
-
-.PHONY: clean all loopd recursives recursived loopd	#always conciderd "out of date" indicates not files
+	rm -f *.o *.a *.so *.gch mains  maindrec maindloop
