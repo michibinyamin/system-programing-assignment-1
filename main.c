@@ -2,7 +2,9 @@
 #include "NumClass.h"
 int main(){
     int num1;
-    int num2;  
+    int num2;
+    
+    printf("type two numbers: ");
     scanf("%d %d",&num1, &num2);
 
     // Swap values if num1 is greater than num2
