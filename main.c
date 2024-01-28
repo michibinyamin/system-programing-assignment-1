@@ -14,40 +14,36 @@ int main(){
         num2 = temp;
     }
 
-    printf("\nThe Armstrong numbers are:");
+    printf("The Armstrong numbers are:");
     for (int i = num1; i <= num2; i++)
     {
         if(isArmstrong(i)){
-            printf("%d ",i);
+            printf(" %d",i);
         }
     }
-    printf("\n");
 
-    printf("\nThe Palindromes numbers are:");
+    printf("\nThe Palindromes are:");
     for (int i = num1; i <= num2; i++)
     {
         if(isPalindrome(i)){
-            printf("%d ",i);
+            printf(" %d",i);
         }
     }
-    printf("\n");
 
     printf("\nThe Prime numbers are:");
     for (int i = num1; i <= num2; i++)
     {
         if(isPrime(i)){
-            printf("%d ",i);
+            printf(" %d",i);
         }
     }
-    printf("\n");
 
-        printf("\nThe Strong numbers are:");
+    printf("\nThe Strong numbers are:");
     for (int i = num1; i <= num2; i++)
     {
         if(isStrong(i)){
-            printf("%d ",i);
+            printf(" %d",i);
         }
     }
-    printf("\n");
     return 0;
 }

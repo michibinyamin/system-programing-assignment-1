@@ -42,7 +42,7 @@ $(STATIC_LOOP_LIBRARY): $(LIB_LOOP_OBJS)
 	ar rcs $@ $^
 
 # Build static recursive library
-$(STATIC_RECURSIVE_LIBRARY): $(LIB_REC_OBJS)
+$(STATIC_RECURSIVE_LIBRARY): $(LIB_REC_OBJS) 
 	ar rcs $@ $^
 
 #build dynamic loop library
